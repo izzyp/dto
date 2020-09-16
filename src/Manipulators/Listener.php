@@ -2,6 +2,8 @@
 
 namespace Cerbero\Dto\Manipulators;
 
+use Cerbero\Dto\Dto;
+
 /**
  * The DTO listener.
  *
@@ -100,28 +102,30 @@ class Listener
     /**
      * Call the DTO listener when retrieving a value
      *
-     * @param string $dtoClass
+     * @param Dto $dto
      * @param string $property
      * @param mixed $value
      * @return mixed
      */
-    public function getting(string $dtoClass, string $property, $value)
+    public function getting(Dto $dto, string $property, $value)
     {
         $method = 'get' . str_replace('_', '', ucwords($property, '_'));
 
-        return $this->callListenerOrReturnValue($dtoClass, $method, $value);
+        return $this->callListenerOrReturnValue($dto, $method, $value);
     }
 
     /**
      * Retrieve the result of the given listener method or the provided value
      *
-     * @param string $dtoClass
+     * @param Dto $dto
      * @param string $method
      * @param mixed $value
      * @return mixed
      */
-    protected function callListenerOrReturnValue(string $dtoClass, string $method, $value)
+    protected function callListenerOrReturnValue(Dto $dto, string $method, $value)
     {
+        $dtoClass = $dto::class;
+        
         $listener = $this->listenersMap[$dtoClass] ?? null;
 
         if (!method_exists($listener, $method)) {
@@ -130,7 +134,7 @@ class Listener
             $this->cachedListeners[$dtoClass] = $this->resolveListener($listener);
         }
 
-        return $this->cachedListeners[$dtoClass]->$method($value);
+        return $this->cachedListeners[$dtoClass]->$method($value, $dto);
     }
 
     /**
