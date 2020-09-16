@@ -29,6 +29,17 @@ class PartialDtoListener
     {
         return 321;
     }
+    
+    /**
+     * Listen when getting nullable
+     *
+     * @param mixed $value
+     * @return int
+     */
+    public function getFormattedName($value, $dto): string
+    {
+        return strtoupper($dto->name);
+    }
 
     /**
      * Sample getter
