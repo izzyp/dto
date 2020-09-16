@@ -69,7 +69,7 @@ trait HasValues
         $dto = ($flags & MUTABLE) ? $this : $this->clone();
 
         try {
-            $value = $this->getListener()->setting(static::class, $property, $value);
+            $value = $this->getListener()->setting($this, $property, $value);
             $dto->setPropertyValueOrMap($property, $value);
         } catch (UnknownDtoPropertyException $e) {
             if (!($flags & IGNORE_UNKNOWN_PROPERTIES)) {
