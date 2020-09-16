@@ -10,6 +10,7 @@ use const Cerbero\Dto\PARTIAL;
  * Sample partial DTO.
  *
  * @property-read string $name
+ * @property-read string|null $formattedName
  * @property-read SampleDto $sample
  * @property-read int|null $nullable
  */
